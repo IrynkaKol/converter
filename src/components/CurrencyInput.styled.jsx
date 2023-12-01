@@ -45,7 +45,7 @@ position: relative;
     
   }
   @media (max-width: 768px) {
-    font-size: 5px;
+    font-size: 15px;
     width: 90px;
     
   }

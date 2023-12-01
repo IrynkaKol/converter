@@ -13,10 +13,10 @@ export const Container = styled.div`
   margin: 0 auto;
 
   @media (max-width: 768px) {
-    max-width: 300px;
+  max-width: 300px;
   max-height: 400px;
   padding: 10px;
-  background: linear-gradient(to right, #001F3F, #4682B4);
+  // background: linear-gradient(#00008B, #0000CD,  #4682B4, #00BFFF, 0.5);
   
   }
 `;
