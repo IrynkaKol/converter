@@ -29,5 +29,6 @@ export const Select = styled.select`
   & option {
     background-color: #1e90ff;
     color: #000000;
+    
   }
 `;
