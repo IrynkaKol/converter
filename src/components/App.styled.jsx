@@ -14,7 +14,7 @@ export const Container = styled.div`
 
   @media (max-width: 768px) {
     max-width: 350px;
-  max-height: 350px;
+  max-height: 400px;
   padding: 10px;
   background: linear-gradient(to right, #001F3F, #4682B4);
   

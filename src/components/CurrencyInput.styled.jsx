@@ -21,7 +21,7 @@ export const Input = styled.input`
   padding-left: 10px;
   color: #fff;
   @media (max-width: 768px) {
-    font-size: 7px;
+    font-size: 18px;
     
   }
 `;
