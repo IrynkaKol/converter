@@ -5,7 +5,7 @@ import { CurrencyInput } from './CurrencyInput';
 import { Header } from './Header';
 
 const API_KEY = process.env.REACT_APP_API_KEY;
-const CURRENCY_API = `https://data.fixer.io/api/latest?access_key=${API_KEY}`;
+const CURRENCY_API = `http://data.fixer.io/api/latest?access_key=${API_KEY}`;
 
 export const App = () => {
   const [amountOne, setAmountOne] = useState(1);
