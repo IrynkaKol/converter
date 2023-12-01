@@ -8,6 +8,11 @@ export const Wrapp = styled.div`
   text-align: center;
   margin-bottom: 30px;
   font-size: 1.5rem;
+  color: #fff;
+
+  @media (max-width: 768px) {
+    font-size: 5px;
+  }
 `;
 
 export const HeaderTitle = styled.h1`

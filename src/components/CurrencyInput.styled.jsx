@@ -7,6 +7,10 @@ export const Group = styled.div`
   grid-template-columns: 250px 150px;
   border-radius: 15px;
   border: 1px solid black;
+  @media (max-width: 768px) {
+    width: 250px;
+    grid-template-columns: 120px 60px;
+  }
 `;
 
 export const Input = styled.input`
@@ -16,6 +20,10 @@ export const Input = styled.input`
   font-size: 1.5rem;
   padding-left: 10px;
   color: #fff;
+  @media (max-width: 768px) {
+    font-size: 7px;
+    
+  }
 `;
 
 export const Select = styled.select`
@@ -23,12 +31,18 @@ export const Select = styled.select`
   border: 0;
   font-size: 1rem;
   padding: 15px;
-  width: 150px;
+  width: 120px;
 
   color: #fff;
   & option {
     background-color: #1e90ff;
     color: #000000;
+    
+    
+  }
+  @media (max-width: 768px) {
+    font-size: 5px;
+    width: 90px;
     
   }
 `;
