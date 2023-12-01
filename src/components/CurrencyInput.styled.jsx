@@ -6,7 +6,7 @@ export const Group = styled.div`
   display: grid;
   grid-template-columns: 250px 150px;
   border-radius: 15px;
-  border: 1px solid black;
+  border: 1px solid white;
   @media (max-width: 768px) {
     width: 250px;
     grid-template-columns: 120px 60px;
@@ -17,6 +17,7 @@ export const Input = styled.input`
   background: none;
   border: 0;
   border-radius: 15px;
+  
   font-size: 1.5rem;
   padding-left: 10px;
   color: #fff;
