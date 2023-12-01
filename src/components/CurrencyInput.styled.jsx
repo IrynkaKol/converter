@@ -17,10 +17,10 @@ export const Input = styled.input`
   background: none;
   border: 0;
   border-radius: 15px;
-  
   font-size: 1.5rem;
   padding-left: 10px;
   color: #fff;
+
   @media (max-width: 768px) {
     font-size: 18px;
     
