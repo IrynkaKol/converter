@@ -1,7 +1,8 @@
+import { Container } from '../components/App.styled';
 import axios from 'axios';
-import {format} from "date-fns";
-import { useState, useEffect, useCallback  } from 'react';
-import { CurrencyInput } from './CurrencyInout';
+import { useState, useEffect, useCallback } from 'react';
+import { CurrencyInput } from './CurrencyInput';
+import { Header } from './Header';
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 const CURRENCY_API = `https://data.fixer.io/api/latest?access_key=${API_KEY}`;
@@ -18,73 +19,83 @@ export const App = () => {
     axios
       .get(CURRENCY_API)
       .then(response => {
-        console.log('API Response:', response.data);
         setCurrencyRates(response.data.rates);
       })
       .catch(err => {
-        console.error('API Error:', err);
         setCurrencyRates(null);
-        setError('Failed to load currency rates. Please try again later.')
+        setError('Failed to load currency rates. Please try again later.');
       });
   }, []);
-  
 
-  const formatCurrency = useCallback((number) => {
-    return number.toFixed(2)
-  }, [])
+  const formatCurrency = useCallback(number => {
+    const numericValue = parseFloat(number);
+    if (isNaN(numericValue)) {
+      return '';
+    }
 
-  const handleAmountOneChange = useCallback((amountOne) => {
-    setAmountTwo(
-      formatCurrency((amountOne * currencyRates[currencyTwo]) / currencyRates[currencyOne])
-    );
-    setAmountOne(amountOne);
-  }, [currencyRates, currencyTwo, currencyOne, setAmountTwo, formatCurrency]);
+    return number.toFixed(2);
+  }, []);
 
-  useEffect(()=> {
-    if(!!currencyRates) {
+  const handleAmountOneChange = useCallback(
+    amountOne => {
+      setAmountTwo(
+        formatCurrency(
+          (amountOne * currencyRates[currencyTwo]) / currencyRates[currencyOne]
+        )
+      );
+      setAmountOne(Number(amountOne));
+    },
+    [currencyRates, currencyTwo, currencyOne, setAmountTwo, formatCurrency]
+  );
+
+  useEffect(() => {
+    if (!!currencyRates) {
       handleAmountOneChange(1);
     }
-    
   }, [currencyRates, handleAmountOneChange]);
 
-  
-
-  const handleAmountTwoChange = (amountTwo) => {
+  const handleAmountTwoChange = amountTwo => {
     setAmountOne(
-      formatCurrency((amountTwo * currencyRates[currencyOne]) / currencyRates[currencyTwo])
+      formatCurrency(
+        (amountTwo * currencyRates[currencyOne]) / currencyRates[currencyTwo]
+      )
     );
-    setAmountTwo(amountTwo);
+    setAmountTwo(Number(amountTwo));
   };
 
   const handleCurrencyOneChange = currencyOne => {
     setAmountTwo(
-      formatCurrency((amountOne * currencyRates[currencyTwo]) / currencyRates[currencyOne])
+      formatCurrency(
+        (amountOne * currencyRates[currencyTwo]) / currencyRates[currencyOne]
+      )
     );
     setCurrencyOne(currencyOne);
   };
 
   const handleCurrencyTwoChange = currencyTwo => {
     setAmountOne(
-      formatCurrency((amountTwo * currencyRates[currencyOne]) / currencyRates[currencyTwo])
+      formatCurrency(
+        (amountTwo * currencyRates[currencyOne]) / currencyRates[currencyTwo]
+      )
     );
     setCurrencyTwo(currencyTwo);
   };
 
   if (error) return <p>{error}</p>;
 
-  if (!currencyRates) return <p>Somesing went wrong</p>
+  if (!currencyRates) return <p>Somesing went wrong</p>;
 
-  if (currencyRates.length === 0 ) return <p>Loading...</p>
+  if (currencyRates.length === 0) return <p>Loading...</p>;
+
   return (
-    <div
-    style={{
-      
-    }}
-    >
-      <h1>React Currency Converter</h1>
-      <p>1 {currencyOne} equils </p>
-      <p>{formatCurrency(amountTwo / amountOne)} {currencyTwo}</p>
-      <p>{format(new Date(), "dd/mm/yyyy hh:mm")}</p>
+    <Container>
+      <Header
+        currencyOne={currencyOne}
+        amountTwo={amountTwo}
+        amountOne={amountOne}
+        currencyTwo={currencyTwo}
+        formatCurrency={formatCurrency}
+      />
       <CurrencyInput
         amount={amountOne}
         currency={currencyOne}
@@ -99,6 +110,6 @@ export const App = () => {
         onAmountChange={handleAmountTwoChange}
         onCurrencyChange={handleCurrencyTwoChange}
       />
-    </div>
+    </Container>
   );
 };
