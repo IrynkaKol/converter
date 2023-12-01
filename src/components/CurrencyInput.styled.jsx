@@ -14,15 +14,20 @@ export const Input = styled.input`
   border: 0;
   border-radius: 15px;
   font-size: 1.5rem;
-
   padding-left: 10px;
+  color: #fff;
 `;
 
 export const Select = styled.select`
   background: none;
   border: 0;
-  font-size: 1.5rem;
-
+  font-size: 1rem;
   padding: 15px;
   width: 150px;
+
+  color: #fff;
+  & option {
+    background-color: #1e90ff;
+    color: #000000;
+  }
 `;
