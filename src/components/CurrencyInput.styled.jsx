@@ -27,16 +27,19 @@ export const Input = styled.input`
 `;
 
 export const Select = styled.select`
+position: relative;
   background: none;
   border: 0;
   font-size: 1rem;
   padding: 15px;
   width: 120px;
-
   color: #fff;
-  & option {
+  
+
+  & > option {
     background-color: #1e90ff;
     color: #000000;
+    
     
     
   }

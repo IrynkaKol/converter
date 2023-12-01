@@ -2,8 +2,8 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
   position: relative;
-  max-width: 600px;
-  max-height: 850px;
+  width: 800px;
+  height: 850px;
   background: transparent;
   border: 2px solid;
   border-color: rgba(255, 255, 255, 0.5);

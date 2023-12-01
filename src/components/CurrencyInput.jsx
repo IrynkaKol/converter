@@ -8,6 +8,9 @@ export const CurrencyInput = ({
   onAmountChange,
   onCurrencyChange,
 }) => {
+  const displayedCurrencies = currencies.filter(currency =>
+    ['USD', 'EUR', 'UAH', 'CZK', 'GBP'].includes(currency)
+  );
   return (
     <Group>
       <Input
@@ -16,7 +19,7 @@ export const CurrencyInput = ({
         onChange={e => onAmountChange(e.target.value)}
       />
       <Select value={currency} onChange={e => onCurrencyChange(e.target.value)}>
-        {currencies.map(currency => (
+        {displayedCurrencies.map(currency => (
           <option key={currency} value={currency}>
             {currency}
           </option>
