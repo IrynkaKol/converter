@@ -11,7 +11,7 @@ export const Wrapp = styled.div`
   color: #fff;
 
   @media (max-width: 768px) {
-    font-size: 5px;
+    font-size: 12px;
     
   }
 `;
@@ -20,7 +20,7 @@ export const HeaderTitle = styled.h1`
   margin-bottom: 30px;
 
   @media (max-width: 768px) {
-    font-size: 7px;
+    font-size: 17px;
     margin-bottom: 15px;
   }
 

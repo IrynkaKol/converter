@@ -34,6 +34,7 @@ position: relative;
   padding: 15px;
   width: 120px;
   color: #fff;
+  border-radius: 15px;
   
 
   & > option {
