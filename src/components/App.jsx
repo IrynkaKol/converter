@@ -4,8 +4,8 @@ import { useState, useEffect, useCallback } from 'react';
 import { CurrencyInput } from './CurrencyInput';
 import { Header } from './Header';
 
-const API_KEY = process.env.REACT_APP_API_KEY;
-const CURRENCY_API = `https://data.fixer.io/api/latest?access_key=${API_KEY}`;
+// const API_KEY = process.env.REACT_APP_API_KEY;
+const CURRENCY_API = "https://open.er-api.com/v6/latest";
 
 export const App = () => {
   const [amountOne, setAmountOne] = useState(1);
