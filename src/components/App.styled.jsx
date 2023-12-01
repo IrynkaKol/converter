@@ -16,7 +16,7 @@ export const Container = styled.div`
   max-width: 300px;
   max-height: 400px;
   padding: 10px;
-  
+  background: linear-gradient(#00008B, #0000CD,  #4682B4, #00BFFF, 0.5);
   
   }
 `;
