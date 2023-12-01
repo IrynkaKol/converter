@@ -12,7 +12,7 @@ export const Wrapp = styled.div`
 
   @media (max-width: 768px) {
     font-size: 5px;
-    color: #191970;
+    
   }
 `;
 
