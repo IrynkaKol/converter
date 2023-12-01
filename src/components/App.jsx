@@ -27,23 +27,26 @@ export const App = () => {
       });
   }, []);
 
-  const formatCurrency = useCallback(number => {
+  const formatCurrency = useCallback((number) => {
     const numericValue = parseFloat(number);
-    if (isNaN(numericValue)) {
-      return '';
+    if (!isNaN(numericValue)) {
+      return numericValue.toFixed(2);
     }
-
-    return number.toFixed(2);
+    return '';
   }, []);
 
   const handleAmountOneChange = useCallback(
     amountOne => {
-      setAmountTwo(
-        formatCurrency(
-          (amountOne * currencyRates[currencyTwo]) / currencyRates[currencyOne]
-        )
-      );
-      setAmountOne(Number(amountOne));
+      const parsedAmount = parseFloat(amountOne);
+      if (!isNaN(parsedAmount)) {
+        setAmountTwo(
+          formatCurrency(
+            (parsedAmount * currencyRates[currencyTwo]) / currencyRates[currencyOne]
+          )
+        );
+      }
+      
+      setAmountOne(formatCurrency(parsedAmount));
     },
     [currencyRates, currencyTwo, currencyOne, setAmountTwo, formatCurrency]
   );
@@ -55,12 +58,16 @@ export const App = () => {
   }, [currencyRates, handleAmountOneChange]);
 
   const handleAmountTwoChange = amountTwo => {
-    setAmountOne(
-      formatCurrency(
-        (amountTwo * currencyRates[currencyOne]) / currencyRates[currencyTwo]
-      )
-    );
-    setAmountTwo(Number(amountTwo));
+    const parsedAmount = parseFloat(amountTwo);
+    if (!isNaN(parsedAmount)) {
+      setAmountOne(
+        formatCurrency(
+          (parsedAmount * currencyRates[currencyOne]) / currencyRates[currencyTwo]
+        )
+      );
+    }
+    
+    setAmountTwo(formatCurrency(parsedAmount));
   };
 
   const handleCurrencyOneChange = currencyOne => {
