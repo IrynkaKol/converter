@@ -22,6 +22,7 @@ export const App = () => {
         setCurrencyRates(response.data.rates);
       })
       .catch(err => {
+        console.error('API Error:', err);
         setCurrencyRates(null);
         setError('Failed to load currency rates. Please try again later.');
       });
