@@ -11,17 +11,26 @@ export const CurrencyInput = ({
   const displayedCurrencies = currencies.filter(currency =>
     ['USD', 'EUR', 'UAH', 'CZK', 'GBP'].includes(currency)
   );
+  const handleAmountInputChange = (e) => {
+    const numericValue = e.target.value.replace(/[^0-9.]/g, '');
+    if (numericValue === '' || numericValue === '.' || numericValue === '0') {
+      console.log('Handling 0 or empty value:', numericValue);
+      onAmountChange({ target: { value: numericValue } });
+    } else if (!isNaN(parseFloat(numericValue))) {
+      console.log('Handling numeric value:', numericValue);
+      onAmountChange({ target: { value: numericValue } });
+    } else {
+      console.log('Not handling:', numericValue);
+    }
+  };
+
   return (
     <Group>
       <Input
         type="text"
         name="value"
         value={amount.toString()}
-        onChange={(e)  => {
-          const numericValue = e.target.value.replace(/[^0-9.]/g, '');
-          onAmountChange({target: {value: numericValue}})
-        }
-        }
+        onChange={handleAmountInputChange}
       />
       <Select
         name="currency"

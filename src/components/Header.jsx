@@ -11,16 +11,20 @@ export const Header = ({
   formatCurrency,
   lastExchangeRate,
 }) => {
+  const isAmountOneValid = !isNaN(parseFloat(amountOne));
+  const isAmountTwoValid = !isNaN(parseFloat(amountTwo));
+
+  const shouldDisplayRate = isAmountOneValid && isAmountTwoValid && amountOne !== '0';
+  const exchangeRate = shouldDisplayRate
+    ? formatCurrency(amountTwo / amountOne)
+    : formatCurrency(lastExchangeRate);
   
   return (
     <Wrapp>
       <HeaderTitle>React Currency Converter</HeaderTitle>
       <p>1 {currencyOne} equals </p>
       <p>
-      {amountOne && amountTwo
-          ? formatCurrency(amountTwo / amountOne)
-          : formatCurrency(lastExchangeRate)}{' '}
-        {currencyTwo}
+      {shouldDisplayRate ? exchangeRate : formatCurrency(lastExchangeRate)} {currencyTwo}
       </p>
       <p>{format(new Date(), 'dd/MM/yyyy hh:mm')}</p>
     </Wrapp>

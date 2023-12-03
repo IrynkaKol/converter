@@ -41,7 +41,12 @@ export const App = () => {
       const inputValue = event.target.value;
       setAmountOne(prevAmountOne => {
         const parsedAmount = parseFloat(inputValue);
-        if (!isNaN(parsedAmount) || inputValue === '' || inputValue === '.') {
+        if (
+          !isNaN(parsedAmount) ||
+          inputValue === '' ||
+          inputValue === '.' ||
+          inputValue === '0'
+        ) {
           const newAmountTwo = formatCurrency(
             (parsedAmount * currencyRates[currencyTwo]) /
               currencyRates[currencyOne]
@@ -55,7 +60,7 @@ export const App = () => {
         return prevAmountOne;
       });
     },
-    [currencyRates, currencyTwo, currencyOne, setAmountTwo, formatCurrency]
+    [formatCurrency, currencyRates, currencyTwo, currencyOne]
   );
 
   useEffect(() => {
@@ -69,7 +74,12 @@ export const App = () => {
       const inputValue = event.target.value;
       setAmountTwo(prevAmountTwo => {
         const parsedAmount = parseFloat(inputValue);
-        if (!isNaN(parsedAmount) || inputValue === '' || inputValue === '.') {
+        if (
+          !isNaN(parsedAmount) ||
+          inputValue === '' ||
+          inputValue === '.' ||
+          inputValue === '0'
+        ) {
           const newAmountOne = formatCurrency(
             (parsedAmount * currencyRates[currencyOne]) /
               currencyRates[currencyTwo]
@@ -83,9 +93,8 @@ export const App = () => {
         return prevAmountTwo;
       });
     },
-    [currencyRates, currencyOne, currencyTwo, setAmountOne, formatCurrency]
+    [formatCurrency, currencyRates, currencyOne, currencyTwo]
   );
- 
 
   const handleCurrencyOneChange = currencyOne => {
     setAmountTwo(
