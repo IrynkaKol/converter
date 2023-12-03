@@ -15,7 +15,7 @@ export const Header = ({
   return (
     <Wrapp>
       <HeaderTitle>React Currency Converter</HeaderTitle>
-      <p>1 {currencyOne} equils </p>
+      <p>1 {currencyOne} equals </p>
       <p>
       {amountOne && amountTwo
           ? formatCurrency(amountTwo / amountOne)
