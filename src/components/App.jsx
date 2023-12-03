@@ -74,12 +74,15 @@ export const App = () => {
       const inputValue = event.target.value;
       setAmountTwo(prevAmountTwo => {
         const parsedAmount = parseFloat(inputValue);
+
         if (
           !isNaN(parsedAmount) ||
           inputValue === '' ||
           inputValue === '.' ||
           inputValue === '0'
         ) {
+          console.log('currencyRates One', currencyRates[currencyOne]);
+          console.log('currencyRates Two', currencyRates[currencyTwo]);
           const newAmountOne = formatCurrency(
             (parsedAmount * currencyRates[currencyOne]) /
               currencyRates[currencyTwo]
@@ -93,7 +96,7 @@ export const App = () => {
         return prevAmountTwo;
       });
     },
-    [formatCurrency, currencyRates, currencyOne, currencyTwo]
+    [currencyRates, currencyOne, currencyTwo, formatCurrency]
   );
 
   const handleCurrencyOneChange = currencyOne => {
@@ -126,8 +129,6 @@ export const App = () => {
     <Container>
       <Header
         currencyOne={currencyOne}
-        amountTwo={amountTwo}
-        amountOne={amountOne}
         currencyTwo={currencyTwo}
         formatCurrency={formatCurrency}
         lastExchangeRate={lastExchangeRate}
