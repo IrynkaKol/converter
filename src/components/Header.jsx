@@ -5,17 +5,22 @@ import { HeaderTitle } from './Header.styled';
 
 export const Header = ({
   currencyOne,
+  currencyTwo,
   amountTwo,
   amountOne,
-  currencyTwo,
   formatCurrency,
+  lastExchangeRate,
 }) => {
+  
   return (
     <Wrapp>
       <HeaderTitle>React Currency Converter</HeaderTitle>
       <p>1 {currencyOne} equils </p>
       <p>
-        {formatCurrency(amountTwo / amountOne)} {currencyTwo}
+      {amountOne && amountTwo
+          ? formatCurrency(amountTwo / amountOne)
+          : formatCurrency(lastExchangeRate)}{' '}
+        {currencyTwo}
       </p>
       <p>{format(new Date(), 'dd/MM/yyyy hh:mm')}</p>
     </Wrapp>

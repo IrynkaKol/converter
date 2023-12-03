@@ -7,6 +7,7 @@ export const Group = styled.div`
   grid-template-columns: 250px 150px;
   border-radius: 15px;
   border: 1px solid white;
+  
   @media (max-width: 768px) {
     width: 250px;
     grid-template-columns: 120px 60px;
@@ -20,9 +21,11 @@ export const Input = styled.input`
   font-size: 1.5rem;
   padding-left: 10px;
   color: #fff;
+  
 
   @media (max-width: 768px) {
     font-size: 18px;
+    
     
   }
 `;
@@ -33,7 +36,7 @@ position: relative;
   border: 0;
   font-size: 1rem;
   padding: 15px;
-  width: 120px;
+  width: 150px;
   color: #fff;
   border-radius: 15px;
   
@@ -47,7 +50,7 @@ position: relative;
   }
   @media (max-width: 768px) {
     font-size: 15px;
-    width: 90px;
+    width: 130px;
     
   }
 `;

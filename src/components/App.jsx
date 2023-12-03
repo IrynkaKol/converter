@@ -12,6 +12,7 @@ export const App = () => {
   const [currencyOne, setCurrencyOne] = useState('USD');
   const [currencyTwo, setCurrencyTwo] = useState('UAH');
   const [currencyRates, setCurrencyRates] = useState([]);
+  const [lastExchangeRate, setLastExchangeRate] = useState(1);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -27,7 +28,7 @@ export const App = () => {
       });
   }, []);
 
-  const formatCurrency = useCallback((number) => {
+  const formatCurrency = useCallback(number => {
     const numericValue = parseFloat(number);
     if (!isNaN(numericValue)) {
       return numericValue.toFixed(2);
@@ -36,39 +37,55 @@ export const App = () => {
   }, []);
 
   const handleAmountOneChange = useCallback(
-    amountOne => {
-      const parsedAmount = parseFloat(amountOne);
-      if (!isNaN(parsedAmount)) {
-        setAmountTwo(
-          formatCurrency(
-            (parsedAmount * currencyRates[currencyTwo]) / currencyRates[currencyOne]
-          )
-        );
-      }
-      
-      setAmountOne(formatCurrency(parsedAmount));
+    event => {
+      const inputValue = event.target.value;
+      setAmountOne(prevAmountOne => {
+        const parsedAmount = parseFloat(inputValue);
+        if (!isNaN(parsedAmount) || inputValue === '' || inputValue === '.') {
+          const newAmountTwo = formatCurrency(
+            (parsedAmount * currencyRates[currencyTwo]) /
+              currencyRates[currencyOne]
+          );
+          setAmountTwo(newAmountTwo);
+
+          setLastExchangeRate(currencyRates[currencyTwo]);
+
+          return inputValue;
+        }
+        return prevAmountOne;
+      });
     },
     [currencyRates, currencyTwo, currencyOne, setAmountTwo, formatCurrency]
   );
 
   useEffect(() => {
     if (!!currencyRates) {
-      handleAmountOneChange(1);
+      handleAmountOneChange({ target: { value: 1 } });
     }
   }, [currencyRates, handleAmountOneChange]);
 
-  const handleAmountTwoChange = amountTwo => {
-    const parsedAmount = parseFloat(amountTwo);
-    if (!isNaN(parsedAmount)) {
-      setAmountOne(
-        formatCurrency(
-          (parsedAmount * currencyRates[currencyOne]) / currencyRates[currencyTwo]
-        )
-      );
-    }
-    
-    setAmountTwo(formatCurrency(parsedAmount));
-  };
+  const handleAmountTwoChange = useCallback(
+    event => {
+      const inputValue = event.target.value;
+      setAmountTwo(prevAmountTwo => {
+        const parsedAmount = parseFloat(inputValue);
+        if (!isNaN(parsedAmount) || inputValue === '' || inputValue === '.') {
+          const newAmountOne = formatCurrency(
+            (parsedAmount * currencyRates[currencyOne]) /
+              currencyRates[currencyTwo]
+          );
+          setAmountOne(newAmountOne);
+
+          setLastExchangeRate(currencyRates[currencyTwo]);
+
+          return inputValue;
+        }
+        return prevAmountTwo;
+      });
+    },
+    [currencyRates, currencyOne, currencyTwo, setAmountOne, formatCurrency]
+  );
+ 
 
   const handleCurrencyOneChange = currencyOne => {
     setAmountTwo(
@@ -77,6 +94,7 @@ export const App = () => {
       )
     );
     setCurrencyOne(currencyOne);
+    setLastExchangeRate(currencyRates[currencyTwo]);
   };
 
   const handleCurrencyTwoChange = currencyTwo => {
@@ -86,6 +104,7 @@ export const App = () => {
       )
     );
     setCurrencyTwo(currencyTwo);
+    setLastExchangeRate(currencyRates[currencyTwo]);
   };
 
   if (error) return <p>{error}</p>;
@@ -102,6 +121,7 @@ export const App = () => {
         amountOne={amountOne}
         currencyTwo={currencyTwo}
         formatCurrency={formatCurrency}
+        lastExchangeRate={lastExchangeRate}
       />
       <CurrencyInput
         amount={amountOne}

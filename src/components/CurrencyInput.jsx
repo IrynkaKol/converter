@@ -15,11 +15,19 @@ export const CurrencyInput = ({
     <Group>
       <Input
         type="text"
-        name='value'
+        name="value"
         value={amount.toString()}
-        onChange={e => onAmountChange(e.target.value)}
+        onChange={(e)  => {
+          const numericValue = e.target.value.replace(/[^0-9.]/g, '');
+          onAmountChange({target: {value: numericValue}})
+        }
+        }
       />
-      <Select name='currency' value={currency} onChange={e => onCurrencyChange(e.target.value)}>
+      <Select
+        name="currency"
+        value={currency}
+        onChange={e => onCurrencyChange(e.target.value)}
+      >
         {displayedCurrencies.map(currency => (
           <option key={currency} value={currency}>
             {currency}
