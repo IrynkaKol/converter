@@ -82,9 +82,9 @@ export const App = () => {
 
   useEffect(() => {
     if (!!currencyRates) {
-      handleAmountOneChange({ target: { value: 1 } });
+      handleAmountOneChange({ target: { value: amountOne } });
     }
-  }, [currencyRates, handleAmountOneChange]);
+  }, [amountOne, currencyRates, handleAmountOneChange]);
 
   const handleAmountTwoChange = useCallback(
     event => {
@@ -98,7 +98,6 @@ export const App = () => {
           inputValue === '.' ||
           inputValue === '0'
         ) {
-          
           const newAmountOne = formatCurrency(
             (parsedAmount * currencyRates[currencyOne]) /
               currencyRates[currencyTwo]

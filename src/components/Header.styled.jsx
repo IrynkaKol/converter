@@ -7,7 +7,7 @@ export const Wrapp = styled.div`
   padding: 40px;
   text-align: center;
   margin-bottom: 30px;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   color: #fff;
 
   @media (max-width: 768px) {

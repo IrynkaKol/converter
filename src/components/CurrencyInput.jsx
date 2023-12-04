@@ -14,13 +14,13 @@ export const CurrencyInput = ({
   const handleAmountInputChange = (e) => {
     const numericValue = e.target.value.replace(/[^0-9.]/g, '');
     if (numericValue === '' || numericValue === '.' || numericValue === '0') {
-      // console.log('Handling 0 or empty value:', numericValue);
+      
       onAmountChange({ target: { value: numericValue } });
     } else if (!isNaN(parseFloat(numericValue))) {
-      // console.log('Handling numeric value:', numericValue);
+      
       onAmountChange({ target: { value: numericValue } });
     } else {
-      // console.log('Not handling:', numericValue);
+      
     }
   };
 
@@ -29,7 +29,7 @@ export const CurrencyInput = ({
       <Input
         type="text"
         name="value"
-        value={amount.toString()}
+        value={amount === 0 ? '' : amount.toString()}
         onChange={handleAmountInputChange}
       />
       <Select
