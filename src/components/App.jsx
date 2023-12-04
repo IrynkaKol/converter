@@ -12,8 +12,27 @@ export const App = () => {
   const [currencyOne, setCurrencyOne] = useState('USD');
   const [currencyTwo, setCurrencyTwo] = useState('UAH');
   const [currencyRates, setCurrencyRates] = useState([]);
-  const [lastExchangeRate, setLastExchangeRate] = useState(1);
+
   const [error, setError] = useState(null);
+  const [exchangeRates, setExchangeRates] = useState({
+    [`${currencyOne}_${currencyTwo}`]: 1,
+    [`${currencyTwo}_${currencyOne}`]: 1,
+  });
+
+  useEffect(() => {
+    if (
+      currencyRates[currencyOne] !== undefined &&
+      currencyRates[currencyTwo] !== undefined
+    ) {
+      setExchangeRates(prevRates => ({
+        ...prevRates,
+        [`${currencyOne}_${currencyTwo}`]:
+          currencyRates[currencyTwo] / currencyRates[currencyOne],
+        [`${currencyTwo}_${currencyOne}`]:
+          currencyRates[currencyOne] / currencyRates[currencyTwo],
+      }));
+    }
+  }, [currencyOne, currencyTwo, currencyRates]);
 
   useEffect(() => {
     axios
@@ -53,8 +72,6 @@ export const App = () => {
           );
           setAmountTwo(newAmountTwo);
 
-          setLastExchangeRate(currencyRates[currencyTwo]);
-
           return inputValue;
         }
         return prevAmountOne;
@@ -89,8 +106,6 @@ export const App = () => {
           );
           setAmountOne(newAmountOne);
 
-          setLastExchangeRate(currencyRates[currencyTwo]);
-
           return inputValue;
         }
         return prevAmountTwo;
@@ -106,7 +121,6 @@ export const App = () => {
       )
     );
     setCurrencyOne(currencyOne);
-    setLastExchangeRate(currencyRates[currencyTwo]);
   };
 
   const handleCurrencyTwoChange = currencyTwo => {
@@ -116,7 +130,6 @@ export const App = () => {
       )
     );
     setCurrencyTwo(currencyTwo);
-    setLastExchangeRate(currencyRates[currencyTwo]);
   };
 
   if (error) return <p>{error}</p>;
@@ -128,10 +141,13 @@ export const App = () => {
   return (
     <Container>
       <Header
+        amountOne={amountOne}
+        amountTwo={amountTwo}
         currencyOne={currencyOne}
         currencyTwo={currencyTwo}
         formatCurrency={formatCurrency}
-        lastExchangeRate={lastExchangeRate}
+        currencyRates={currencyRates}
+        exchangeRateOneToTwo={exchangeRates[`${currencyOne}_${currencyTwo}`]}
       />
       <CurrencyInput
         amount={amountOne}
