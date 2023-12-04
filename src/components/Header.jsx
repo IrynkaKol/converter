@@ -9,18 +9,8 @@ export const Header = ({
   currencyOne,
   currencyTwo,
   formatCurrency,
-  
-  exchangeRateOneToTwo
- 
-  
+  exchangeRateOneToTwo,
 }) => {
-  // console.log('Header - amountOne:', amountOne);
-  // console.log('Header - amountTwo:', amountTwo);
-  // console.log('Header - currencyOne:', currencyOne);
-  // console.log('Header - currencyTwo:', currencyTwo);
-  // console.log('Header - exchangeRateOneToTwo:', exchangeRateOneToTwo);
-  
-  
   return (
     <Wrapp>
       <HeaderTitle>React Currency Converter</HeaderTitle>
@@ -28,9 +18,12 @@ export const Header = ({
         <>
           <p>1 {currencyOne} equals </p>
           <p>
-          {amountOne && amountTwo !== '' && amountOne !== '0' && amountTwo !== '0'
-              ? formatCurrency(amountTwo / amountOne)
-              : formatCurrency(exchangeRateOneToTwo)}
+            {amountOne &&
+            amountTwo !== '' &&
+            amountOne !== '0' &&
+            amountTwo !== '0'
+              ? formatCurrency(exchangeRateOneToTwo)
+              : formatCurrency(exchangeRateOneToTwo)}{' '}
             {currencyTwo}
           </p>
         </>

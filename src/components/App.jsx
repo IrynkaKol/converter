@@ -98,8 +98,7 @@ export const App = () => {
           inputValue === '.' ||
           inputValue === '0'
         ) {
-          console.log('currencyRates One', currencyRates[currencyOne]);
-          console.log('currencyRates Two', currencyRates[currencyTwo]);
+          
           const newAmountOne = formatCurrency(
             (parsedAmount * currencyRates[currencyOne]) /
               currencyRates[currencyTwo]
