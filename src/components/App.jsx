@@ -28,8 +28,8 @@ export const App = () => {
   }, []);
 
   // The function for formatting a number into currency format
-  function formatCurrency(number) {
-    return number.toFixed(2);
+  const formatCurrency = number => {
+    return number ? number.toFixed(2) : ''; 
   }
 
   // Function to change the currency of the first input
