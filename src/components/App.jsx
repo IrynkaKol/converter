@@ -1,6 +1,6 @@
-import { Container } from '../components/App.styled';
 import axios from 'axios';
 import { useState, useEffect, useCallback } from 'react';
+import { Container } from '../components/App.styled';
 import { CurrencyInput } from './CurrencyInput';
 import { Header } from './Header';
 
@@ -12,155 +12,121 @@ export const App = () => {
   const [currencyOne, setCurrencyOne] = useState('USD');
   const [currencyTwo, setCurrencyTwo] = useState('UAH');
   const [currencyRates, setCurrencyRates] = useState([]);
-
   const [error, setError] = useState(null);
-  const [exchangeRates, setExchangeRates] = useState({
-    [`${currencyOne}_${currencyTwo}`]: 1,
-    [`${currencyTwo}_${currencyOne}`]: 1,
-  });
+  const [changedInput, setChangedInput] = useState(null); // Saving the value of the changed input
 
+  // Getting currency exchange rates
   useEffect(() => {
-    if (
-      currencyRates[currencyOne] !== undefined &&
-      currencyRates[currencyTwo] !== undefined
-    ) {
-      setExchangeRates(prevRates => ({
-        ...prevRates,
-        [`${currencyOne}_${currencyTwo}`]:
-          currencyRates[currencyTwo] / currencyRates[currencyOne],
-        [`${currencyTwo}_${currencyOne}`]:
-          currencyRates[currencyOne] / currencyRates[currencyTwo],
-      }));
-    }
-  }, [currencyOne, currencyTwo, currencyRates]);
-
-  useEffect(() => {
-    axios
-      .get(CURRENCY_API)
-      .then(response => {
-        setCurrencyRates(response.data.rates);
-      })
-      .catch(err => {
-        console.error('API Error:', err);
-        setCurrencyRates(null);
-        setError('Failed to load currency rates. Please try again later.');
-      });
+    axios.get(CURRENCY_API).then(response => {
+      setCurrencyRates(response.data.rates);
+    })
+    .catch(err => {
+      console.error('API Error:', err);
+      setCurrencyRates(null);
+      setError('Failed to load currency rates. Please try again later.');
+    });
   }, []);
 
-  const formatCurrency = useCallback(number => {
-    const numericValue = parseFloat(number);
-    if (!isNaN(numericValue)) {
-      return numericValue.toFixed(2);
-    }
-    return '';
-  }, []);
+  // The function for formatting a number into currency format
+  function formatCurrency(number) {
+    return number.toFixed(2);
+  }
 
-  const handleAmountOneChange = useCallback(
-    event => {
-      const inputValue = event.target.value;
-      setAmountOne(prevAmountOne => {
-        const parsedAmount = parseFloat(inputValue);
-        if (
-          !isNaN(parsedAmount) ||
-          inputValue === '' ||
-          inputValue === '.' ||
-          inputValue === '0'
-        ) {
-          const newAmountTwo = formatCurrency(
-            (parsedAmount * currencyRates[currencyTwo]) /
-              currencyRates[currencyOne]
-          );
-          setAmountTwo(newAmountTwo);
-
-          return inputValue;
-        }
-        return prevAmountOne;
-      });
+  // Function to change the currency of the first input
+  const handleCurrencyOneChange = useCallback(
+    currencyOne => {
+      setCurrencyOne(currencyOne);
+      setChangedInput('amountOne'); // Setting the flag for currency change in the first input
     },
-    [formatCurrency, currencyRates, currencyTwo, currencyOne]
+    []
   );
 
+  // Function to change the currency of the second input
+  const handleCurrencyTwoChange = useCallback(
+    currencyTwo => {
+      setCurrencyTwo(currencyTwo);
+      setChangedInput('amountTwo'); // Setting the flag for currency change in the second input
+    },
+    []
+  );
+
+  // Updating the value of the first input upon currency change
   useEffect(() => {
-    if (!!currencyRates) {
-      handleAmountOneChange({ target: { value: amountOne } });
+    if (!currencyRates || Object.keys(currencyRates).length === 0 || changedInput !== 'amountOne') {
+      return;
     }
-  }, [amountOne, currencyRates, handleAmountOneChange]);
-
-  const handleAmountTwoChange = useCallback(
-    event => {
-      const inputValue = event.target.value;
-      setAmountTwo(prevAmountTwo => {
-        const parsedAmount = parseFloat(inputValue);
-
-        if (
-          !isNaN(parsedAmount) ||
-          inputValue === '' ||
-          inputValue === '.' ||
-          inputValue === '0'
-        ) {
-          const newAmountOne = formatCurrency(
-            (parsedAmount * currencyRates[currencyOne]) /
-              currencyRates[currencyTwo]
-          );
-          setAmountOne(newAmountOne);
-
-          return inputValue;
-        }
-        return prevAmountTwo;
-      });
-    },
-    [currencyRates, currencyOne, currencyTwo, formatCurrency]
-  );
-
-  const handleCurrencyOneChange = currencyOne => {
     setAmountTwo(
       formatCurrency(
         (amountOne * currencyRates[currencyTwo]) / currencyRates[currencyOne]
       )
     );
-    setCurrencyOne(currencyOne);
-  };
+  }, [currencyRates, amountOne, currencyOne, currencyTwo, changedInput]);
 
-  const handleCurrencyTwoChange = currencyTwo => {
+  // Updating the value of the second input upon currency change
+  useEffect(() => {
+    if (!currencyRates || Object.keys(currencyRates).length === 0 || changedInput !== 'amountTwo') {
+      return;
+    }
     setAmountOne(
       formatCurrency(
         (amountTwo * currencyRates[currencyOne]) / currencyRates[currencyTwo]
       )
     );
-    setCurrencyTwo(currencyTwo);
-  };
+  }, [currencyRates, amountTwo, currencyOne, currencyTwo, changedInput]);
 
-  if (error) return <p>{error}</p>;
+  // Initial value upon page load
+  useEffect(() => {
+    if (!currencyRates || Object.keys(currencyRates).length === 0) {
+      return;
+    }
+    
+    setAmountOne(1);
+    setAmountTwo(formatCurrency(currencyRates[currencyTwo]));
+  }, [currencyRates, currencyTwo]);
 
-  if (!currencyRates) return <p>Somesing went wrong</p>;
+  // Function to change the value of the first input
+  const handleAmountOneChange = useCallback(
+    amountOne => {
+      setAmountOne(amountOne);
+      setChangedInput('amountOne'); 
+    },
+    []
+  );
 
-  if (currencyRates.length === 0) return <p>Loading...</p>;
+  // Function to change the value of the second input
+  const handleAmountTwoChange = useCallback(
+    amountTwo => {
+      setAmountTwo(amountTwo);
+      setChangedInput('amountTwo'); 
+        },
+    []
+  );
 
   return (
     <Container>
+      {error && <p>{error}</p>}
       <Header
-        amountOne={amountOne}
-        amountTwo={amountTwo}
         currencyOne={currencyOne}
         currencyTwo={currencyTwo}
-        formatCurrency={formatCurrency}
+        amountOne={amountOne}
         currencyRates={currencyRates}
-        exchangeRateOneToTwo={exchangeRates[`${currencyOne}_${currencyTwo}`]}
+        formatCurrency={formatCurrency}
       />
       <CurrencyInput
-        amount={amountOne}
-        currency={currencyOne}
-        currencies={Object.keys(currencyRates)}
         onAmountChange={handleAmountOneChange}
         onCurrencyChange={handleCurrencyOneChange}
+        currencies={Object.keys(currencyRates)}
+        amount={amountOne}
+        currency={currencyOne}
       />
       <CurrencyInput
-        amount={amountTwo}
-        currency={currencyTwo}
-        currencies={Object.keys(currencyRates)}
         onAmountChange={handleAmountTwoChange}
         onCurrencyChange={handleCurrencyTwoChange}
+        currencies={Object.keys(currencyRates)}
+        amount={amountTwo}
+        currency={currencyTwo}
       />
     </Container>
   );
 };
+
